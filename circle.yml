@@ -3,8 +3,13 @@ machine:
         - docker
 
 dependencies:
+    cache_directories:
+        - "~/docker"
+
     override:
+        - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
         - docker build -t test .
+        - mkdir -p ~/docker; docker save test > ~/docker/image.tar
 
 test:
     override:
